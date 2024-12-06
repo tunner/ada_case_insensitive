@@ -24,7 +24,7 @@ find "$ROOT_DIR" -type f \( -name "*.ads" -o -name "*.adb" \) | grep -E '[A-Z]' 
     # Get the full package name
     package_name=$(file_to_package_name "$file")
     # Get the file name relative to the ROOT_DIR
-    relative_file=$(realpath --relative-to="$ROOT_DIR" "$file")
+    relative_file=$(basename "$file")
 
     # Determine if it is a spec or body file
     if [[ "$file" == *.ads ]]; then
