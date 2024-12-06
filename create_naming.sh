@@ -23,12 +23,14 @@ file_to_package_name() {
 find "$ROOT_DIR" -type f \( -name "*.ads" -o -name "*.adb" \) | grep -E '[A-Z]' | while read -r file; do
     # Get the full package name
     package_name=$(file_to_package_name "$file")
+    # Get the file name relative to the ROOT_DIR
+    relative_file=$(realpath --relative-to="$ROOT_DIR" "$file")
 
     # Determine if it is a spec or body file
     if [[ "$file" == *.ads ]]; then
-        echo "      for Spec (\"$package_name\") use \"$(realpath --relative-to="$ROOT_DIR" "$file")\";" >> "$OUTPUT_FILE"
+        echo "      for Spec (\"$package_name\") use \"$relative_file\";" >> "$OUTPUT_FILE"
     elif [[ "$file" == *.adb ]]; then
-        echo "      for Body (\"$package_name\") use \"$(realpath --relative-to="$ROOT_DIR" "$file")\";" >> "$OUTPUT_FILE"
+        echo "      for Body (\"$package_name\") use \"$relative_file\";" >> "$OUTPUT_FILE"
     fi
 done
 
